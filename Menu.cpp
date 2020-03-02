@@ -9,8 +9,8 @@ Menu::Menu() {
 
 // mostrar menú
 char Menu::mostrarMenu() {
-  archivoCreditoEntradaSalida.clear();
-  archivoCreditoEntradaSalida.seekg(0, ios::beg);
+  archivoCreditoEntradaSalida.clear(); // vaciar buffer
+  archivoCreditoEntradaSalida.seekg(0, ios::beg); // reposicionar puntero al principio del archivo
 
   int op;
 
@@ -49,16 +49,15 @@ void Menu::darAltaCliente() {
 
   Cliente c;
   c.establecerNumeroCuenta(valorNumeroCuenta);
-
   c.establecerApellido(valorApellido);
   c.establecerPrimerNombre(valorPrimerNombre);
   c.establecerSaldo(valorSaldo);
 
-  archivoCreditoEntradaSalida.seekp((c.obtenerNumeroCuenta() - 1) * sizeof(Cliente));  
-  archivoCreditoEntradaSalida.write(reinterpret_cast<const char *>(&c), sizeof(Cliente));
+  archivoCreditoEntradaSalida.seekp((c.obtenerNumeroCuenta() - 1) * sizeof(Cliente));   // reposicionar puntero a número de cuenta
+  archivoCreditoEntradaSalida.write(reinterpret_cast<const char *>(&c), sizeof(Cliente)); // leer cuenta
 
-  cout << "La dirección es: " << int(archivoCreditoEntradaSalida.tellp()) - int(sizeof(Cliente)) << '\n';
-  cout << "Tamaño del objeto es: " << sizeof(c) << '\n';
+  cout << "La dirección es: " << int(archivoCreditoEntradaSalida.tellp()) - int(sizeof(Cliente)) << '\n'; // posición en la que se guardó
+  cout << "Tamaño del objeto es: " << sizeof(c) << '\n';  // tamaño del objeto
 }
 
 // dar de baja cliente
@@ -75,13 +74,13 @@ void Menu::darBajaCliente() {
     return;
   }
 
-  archivoCreditoEntradaSalida.seekp((valorNumeroCuenta - 1) * sizeof(Cliente));  
-  archivoCreditoEntradaSalida.write(reinterpret_cast<const char *>(&c), sizeof(Cliente));
+  archivoCreditoEntradaSalida.seekp((valorNumeroCuenta - 1) * sizeof(Cliente)); // reposicionar puntero
+  archivoCreditoEntradaSalida.write(reinterpret_cast<const char *>(&c), sizeof(Cliente)); // leer cuenta
 
   if (c.obtenerNumeroCuenta() != 0) {
     c = Cliente();
-    archivoCreditoEntradaSalida.seekp((valorNumeroCuenta - 1) * sizeof(Cliente));  
-    archivoCreditoEntradaSalida.write(reinterpret_cast<const char *>(&c), sizeof(Cliente)); 
+    archivoCreditoEntradaSalida.seekp((valorNumeroCuenta - 1) * sizeof(Cliente));   // reposicionar puntero
+    archivoCreditoEntradaSalida.write(reinterpret_cast<const char *>(&c), sizeof(Cliente)); // eliminar cuenta
   }
 
 }
@@ -101,8 +100,8 @@ void Menu::cambiarSaldoCliente() {
     return;
   }
 
-  archivoCreditoEntradaSalida.seekp((valorNumeroCuenta - 1) * sizeof(Cliente));  
-  archivoCreditoEntradaSalida.read(reinterpret_cast<char *>(&c), sizeof(Cliente));
+  archivoCreditoEntradaSalida.seekp((valorNumeroCuenta - 1) * sizeof(Cliente));   // reposicionar puntero
+  archivoCreditoEntradaSalida.read(reinterpret_cast<char *>(&c), sizeof(Cliente)); // leer cuenta
 
   if (c.obtenerNumeroCuenta() != 0) {
     c.imprimirCliente();
@@ -114,8 +113,8 @@ void Menu::cambiarSaldoCliente() {
 
     c.imprimirCliente();
 
-    archivoCreditoEntradaSalida.seekp((valorNumeroCuenta - 1) * sizeof(Cliente));  
-    archivoCreditoEntradaSalida.write(reinterpret_cast<const char *>(&c), sizeof(Cliente)); 
+    archivoCreditoEntradaSalida.seekp((valorNumeroCuenta - 1) * sizeof(Cliente));  // reposicionar puntero
+    archivoCreditoEntradaSalida.write(reinterpret_cast<const char *>(&c), sizeof(Cliente));  // actualizar cuenta
   } 
 }
 
@@ -132,8 +131,8 @@ void Menu::consultaIndividual() {
     return;
   } 
 
-  archivoCreditoEntradaSalida.seekg((valorNumeroCuenta - 1) * sizeof(Cliente));  
-  archivoCreditoEntradaSalida.read(reinterpret_cast<char *>(&c), sizeof(Cliente));
+  archivoCreditoEntradaSalida.seekg((valorNumeroCuenta - 1) * sizeof(Cliente));  // reposicionar puntero
+  archivoCreditoEntradaSalida.read(reinterpret_cast<char *>(&c), sizeof(Cliente)); // leer cuenta
 
   if (c.obtenerNumeroCuenta() != 0) 
     c.imprimirCliente();  
@@ -143,11 +142,11 @@ void Menu::consultaIndividual() {
 void Menu::consultaGeneral() {
   Cliente c;
 
-  while(!archivoCreditoEntradaSalida.eof()) {
+  while(!archivoCreditoEntradaSalida.eof()) { // leer hasta fin del archivo
 
-    archivoCreditoEntradaSalida.read(reinterpret_cast<char *>(&c), sizeof(Cliente));
+    archivoCreditoEntradaSalida.read(reinterpret_cast<char *>(&c), sizeof(Cliente)); // leer cuenta
 
-    if (archivoCreditoEntradaSalida.eof()) 
+    if (archivoCreditoEntradaSalida.eof()) // no imprimir si es el último
       break;
 
     if (c.obtenerNumeroCuenta() != 0) 
