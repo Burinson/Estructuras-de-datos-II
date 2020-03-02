@@ -1,0 +1,13 @@
+1
+1 Almazan Ruben 50
+1
+25 Duenas Mario 56.4
+1
+50 Guzman Jesus 87.2
+1
+75 Martinez Astra 10.2
+1
+100 Torres Oscar 0
+1
+99 Vazquez Edgar -45.3
+6
