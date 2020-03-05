@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <string.h>
+#include <iomanip>
 using namespace std;
 
 class Cliente {
@@ -20,5 +21,6 @@ class Cliente {
   string obtenerPrimerNombre();
   void establecerSaldo(double);
   double obtenerSaldo();
+  void imprimirCabecera();
   void imprimirCliente();
 };  

@@ -17,28 +17,34 @@ using namespace std;
 int main() {
   Menu menu;
   bool leer = true;  
+  fstream archivoCreditoEntradaSalida; // creación de flujo
+  archivoCreditoEntradaSalida.open("credito.dat", ios::in | ios::out);
 
   while(leer) {
-    int op = menu.mostrarMenu(); // recuperar opción
+    int op = menu.mostrarMenu(archivoCreditoEntradaSalida); // recuperar opción
 
     if (op == 1)  
-      menu.darAltaCliente(); // dar de alta a a cliente
+      menu.darAltaCliente(archivoCreditoEntradaSalida); // dar de alta a a cliente
      
     if (op == 2)  
-      menu.darBajaCliente(); // dar de baja a cliente
+      menu.darBajaCliente(archivoCreditoEntradaSalida); // dar de baja a cliente
      
     if (op == 3)  
-      menu.cambiarSaldoCliente(); // cambiar saldo a cliente
+      menu.cambiarSaldoCliente(archivoCreditoEntradaSalida); // cambiar saldo a cliente
      
     if (op == 4) 
-      menu.consultaIndividual(); // consulta individual
+      menu.consultaIndividual(archivoCreditoEntradaSalida); // consulta individual
     
     if (op == 5) 
-      menu.consultaGeneral(); // consultas generales
+      menu.consultaGeneral(archivoCreditoEntradaSalida); // consultas generales
+
     if (op == 6)
       leer = false;
+      
     if (op < 0 || op > 6)  
       cout << "Opción no válida\n"; // validar opción
   } 
+
+  archivoCreditoEntradaSalida.close();
   return 0; 
 } // fin de main

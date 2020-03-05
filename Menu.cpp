@@ -1,15 +1,10 @@
 #include "Menu.h"
 using namespace std;
 
-// menú
-Menu::Menu() {
-  archivoCreditoEntradaSalida = fstream("credito.dat", ios::in | ios::out);
-}
-
 
 // mostrar menú
-char Menu::mostrarMenu() {
-  archivoCreditoEntradaSalida.clear(); // vaciar buffer
+char Menu::mostrarMenu(fstream &archivoCreditoEntradaSalida) {
+  archivoCreditoEntradaSalida.clear(); // Restaura el estado del flujo a “bueno”
   archivoCreditoEntradaSalida.seekg(0, ios::beg); // reposicionar puntero al principio del archivo
 
   int op;
@@ -28,8 +23,7 @@ char Menu::mostrarMenu() {
 }
 
 // dar de alta cliente
-void Menu::darAltaCliente() {
-
+void Menu::darAltaCliente(fstream &archivoCreditoEntradaSalida) {
   int valorNumeroCuenta;
   string valorApellido, valorPrimerNombre;
   double valorSaldo;
@@ -44,6 +38,16 @@ void Menu::darAltaCliente() {
 
   if (valorNumeroCuenta == 0) return;
 
+  Cliente clienteAnterior;
+
+  archivoCreditoEntradaSalida.seekg((valorNumeroCuenta - 1) * sizeof(Cliente));   // reposicionar puntero a número de cuenta
+  archivoCreditoEntradaSalida.read(reinterpret_cast<char *>(&clienteAnterior), sizeof(Cliente));
+
+  if (clienteAnterior.obtenerNumeroCuenta() != 0) {
+    cout << "Esta cuenta ya existe\n";
+    return;
+  }
+  
   cout << "Teclea apellido, primer nombre, saldo\n?";
   cin >> valorApellido >> valorPrimerNombre >> valorSaldo;
 
@@ -53,7 +57,7 @@ void Menu::darAltaCliente() {
   c.establecerPrimerNombre(valorPrimerNombre);
   c.establecerSaldo(valorSaldo);
 
-  archivoCreditoEntradaSalida.seekp((c.obtenerNumeroCuenta() - 1) * sizeof(Cliente));   // reposicionar puntero a número de cuenta
+  archivoCreditoEntradaSalida.seekp((valorNumeroCuenta - 1) * sizeof(Cliente));   // reposicionar puntero a número de cuenta
   archivoCreditoEntradaSalida.write(reinterpret_cast<const char *>(&c), sizeof(Cliente)); // leer cuenta
 
   cout << "La dirección es: " << int(archivoCreditoEntradaSalida.tellp()) - int(sizeof(Cliente)) << '\n'; // posición en la que se guardó
@@ -61,8 +65,7 @@ void Menu::darAltaCliente() {
 }
 
 // dar de baja cliente
-void Menu::darBajaCliente() {
-
+void Menu::darBajaCliente(fstream &archivoCreditoEntradaSalida) {
   int valorNumeroCuenta;
   Cliente c;
 
@@ -74,23 +77,25 @@ void Menu::darBajaCliente() {
     return;
   }
 
-  archivoCreditoEntradaSalida.seekp((valorNumeroCuenta - 1) * sizeof(Cliente)); // reposicionar puntero
-  archivoCreditoEntradaSalida.write(reinterpret_cast<const char *>(&c), sizeof(Cliente)); // leer cuenta
+  archivoCreditoEntradaSalida.seekg((valorNumeroCuenta - 1) * sizeof(Cliente)); // reposicionar puntero
+  archivoCreditoEntradaSalida.read(reinterpret_cast<char *>(&c), sizeof(Cliente)); // leer cuenta
 
   if (c.obtenerNumeroCuenta() != 0) {
+    cout << "Registro eliminado exitosamente\n";
     c = Cliente();
     archivoCreditoEntradaSalida.seekp((valorNumeroCuenta - 1) * sizeof(Cliente));   // reposicionar puntero
     archivoCreditoEntradaSalida.write(reinterpret_cast<const char *>(&c), sizeof(Cliente)); // eliminar cuenta
+  } else {
+    cout << "Esta cuenta no existe\n";
   }
 
 }
 
 // cambiar saldo de cliente
-void Menu::cambiarSaldoCliente() {
-
+void Menu::cambiarSaldoCliente(fstream &archivoCreditoEntradaSalida) {
   int valorNumeroCuenta;
   Cliente c;
-  int transaccion;
+  double transaccion;
 
   cout << "Escriba el numero de cuenta (De 1 a 100, 0 para terminar la entrada)\n?";
   cin >> valorNumeroCuenta;
@@ -104,6 +109,7 @@ void Menu::cambiarSaldoCliente() {
   archivoCreditoEntradaSalida.read(reinterpret_cast<char *>(&c), sizeof(Cliente)); // leer cuenta
 
   if (c.obtenerNumeroCuenta() != 0) {
+    c.imprimirCabecera();
     c.imprimirCliente();
 
     cout << "Escriba cargo (+) o abono (-): ";
@@ -111,15 +117,18 @@ void Menu::cambiarSaldoCliente() {
 
     c.establecerSaldo(c.obtenerSaldo() + transaccion);
 
+    c.imprimirCabecera();
     c.imprimirCliente();
 
     archivoCreditoEntradaSalida.seekp((valorNumeroCuenta - 1) * sizeof(Cliente));  // reposicionar puntero
     archivoCreditoEntradaSalida.write(reinterpret_cast<const char *>(&c), sizeof(Cliente));  // actualizar cuenta
-  } 
+  } else {
+    cout << "Esta cuenta no existe\n";
+  }
 }
 
 // consulta individual
-void Menu::consultaIndividual() {
+void Menu::consultaIndividual(fstream &archivoCreditoEntradaSalida) {
   int valorNumeroCuenta;
   Cliente c;
 
@@ -134,14 +143,19 @@ void Menu::consultaIndividual() {
   archivoCreditoEntradaSalida.seekg((valorNumeroCuenta - 1) * sizeof(Cliente));  // reposicionar puntero
   archivoCreditoEntradaSalida.read(reinterpret_cast<char *>(&c), sizeof(Cliente)); // leer cuenta
 
-  if (c.obtenerNumeroCuenta() != 0) 
-    c.imprimirCliente();  
+  if (c.obtenerNumeroCuenta() != 0) {
+    c.imprimirCabecera();
+    c.imprimirCliente();
+  } else {
+    cout << "Esta cuenta no existe\n";
+  }
 }
 
 // consulta general
-void Menu::consultaGeneral() {
+void Menu::consultaGeneral(fstream &archivoCreditoEntradaSalida) {
   Cliente c;
 
+  c.imprimirCabecera();
   while(!archivoCreditoEntradaSalida.eof()) { // leer hasta fin del archivo
 
     archivoCreditoEntradaSalida.read(reinterpret_cast<char *>(&c), sizeof(Cliente)); // leer cuenta
@@ -149,7 +163,8 @@ void Menu::consultaGeneral() {
     if (archivoCreditoEntradaSalida.eof()) // no imprimir si es el último
       break;
 
-    if (c.obtenerNumeroCuenta() != 0) 
+    if (c.obtenerNumeroCuenta() != 0) {
       c.imprimirCliente();
+    }
   }
 }
