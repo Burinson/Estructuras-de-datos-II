@@ -1,0 +1,6 @@
+1111 astra 25.45
+2222 uriel 65.42
+3333 edgar -57.45
+4444 mario -54.97
+5555 ruben 0
+6666 oscar 0

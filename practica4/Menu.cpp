@@ -88,7 +88,6 @@ void Menu::darBajaCliente(fstream &archivoCreditoEntradaSalida) {
   } else {
     cout << "Esta cuenta no existe\n";
   }
-
 }
 
 // cambiar saldo de cliente
