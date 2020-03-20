@@ -1,0 +1,35 @@
+La empresa "Moon Microsystems" necesita un sistema que implemente una agenda para tener la información de sus contactos. 
+Los datos que se guardaran para cada contacto son: nombre, apellido, direccion, ciudad, estado, codigo postal. 
+Contemple el siguiente menú:
+Menú - Agenda de Contactos
+1. Alta de contacto
+2. Consulta individual (utilizar llave canónica)
+3. Consultas generales
+4. Salir
+Elige tu opción:
+
+Notas importantes:
+- Para la opción 1, el registro (contacto) se guardará al final del archivo
+
+- Para la opción 2, se pedirá al usuario el nombre y el apellido del contacto para formar una llave canónica de búsqueda
+
+- Para la opción 3, se mostrarán todos los registros que contenga el archivo. (formato de salida libre)
+
+- Utilizaremos la combinación de dos metodos: 
+   - Estructuras de campos: método 3: separar los campos con delimitadores
+   - Estructuras de registros: método 2: comenzar cada registro con un indicador de longitud
+
+- Se recomienda utilizar la clase fstream
+
+- Se recomientda utilizar los siguientes modos de apertura ios::in|ios::out|ios::app
+
+- El nombre del archivo lógico será archivoAgendaES
+
+- El nombre del archivo físico será contactos.txt
+
+- LLAVES CANONICAS.
+Cuando se busca un registro que contenga el nombre Job Godoy, el usuario quiere reconocerlo, aunque introduzca la llave en forma de "JOB GODOY",
+"job godoy" o "jOb gOdoY". Para ello, se debe definir una forma estándar para llaves, paralelamente con las reglas y procedimientos asociados 
+para convertirlas a esta forma. Una forma estándar de este tipo suele llamarse forma canónica de la llave. Un significado de la palabra canon 
+es regla; la palabra canónico significa "en conformidad con la regla". Una forma canónica para una llave de búsqueda es la representación 
+única para esa llave que se ajusta a la regla.
