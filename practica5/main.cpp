@@ -17,24 +17,24 @@ using namespace std;
 int main() {
   Menu menu;
   bool leer = true;  
-  fstream archivoCreditoEntradaSalida; // creación de flujo
-  archivoCreditoEntradaSalida.open("contactos.txt", ios::in | ios::out | ios::app);
+  fstream archivoAgendaES; // creación de flujo
+  archivoAgendaES.open("contactos.txt", ios::in | ios::out | ios::app);
 
   while(leer) {
     // leer opción
-    int op = menu.mostrarMenu(archivoCreditoEntradaSalida); 
+    int op = menu.mostrarMenu(archivoAgendaES); 
 
     // dar de alta contacto
     if (op == 1)  
-      menu.darAltaContacto(archivoCreditoEntradaSalida); 
+      menu.darAltaContacto(archivoAgendaES); 
 
     // consulta individual 
     if (op == 2)  
-      menu.consultaIndividual(archivoCreditoEntradaSalida); 
+      menu.consultaIndividual(archivoAgendaES); 
      
     // consulta general 
     if (op == 3)  
-      menu.consultaGeneral(archivoCreditoEntradaSalida); 
+      menu.consultaGeneral(archivoAgendaES); 
 
     //salir 
     if (op == 4) 
@@ -44,6 +44,6 @@ int main() {
       cout << "Opción no válida\n"; // validar opción
   } 
 
-  archivoCreditoEntradaSalida.close();
+  archivoAgendaES.close();
   return 0; 
 } // fin de main

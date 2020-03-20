@@ -3,11 +3,12 @@
 #include <string.h>
 #include <iomanip>
 using namespace std;
+#define what(x) cout << #x << ": " << x << '\n'
 
-class Cliente {
+class Contacto {
  private:
-  char apellido[15];
   char primerNombre[15];
+  char apellido[15];
   char direccion[15];
   char ciudad[15];
   char estado[15];
@@ -15,7 +16,7 @@ class Cliente {
   double saldo;
 
  public:
-  Cliente(string = "", string = "", string = "", string = "", string = "", string = "", double = 0.0);
+  Contacto(string = "", string = "", string = "", string = "", string = "", string = "", double = 0.0);
 
   void establecerPrimerNombre(string);
   string obtenerPrimerNombre();
@@ -39,5 +40,5 @@ class Cliente {
   double obtenerSaldo();
 
   void imprimirCabecera();
-  void imprimirCliente();
+  void imprimirContacto();
 };  

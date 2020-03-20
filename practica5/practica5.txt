@@ -1,17 +1,9 @@
-La empresa "Moon Microsystems" necesita un sistema que implemente una agenda para tener la información de sus contactos. 
+
 Los datos que se guardaran para cada contacto son: nombre, apellido, direccion, ciudad, estado, codigo postal. 
-Contemple el siguiente menú:
-Menú - Agenda de Contactos
-1. Alta de contacto
-2. Consulta individual (utilizar llave canónica)
-3. Consultas generales
-4. Salir
-Elige tu opción:
+
 
 Notas importantes:
-- Para la opción 1, el registro (contacto) se guardará al final del archivo
 
-- Para la opción 2, se pedirá al usuario el nombre y el apellido del contacto para formar una llave canónica de búsqueda
 
 - Para la opción 3, se mostrarán todos los registros que contenga el archivo. (formato de salida libre)
 

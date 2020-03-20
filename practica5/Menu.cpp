@@ -3,9 +3,9 @@ using namespace std;
 
 
 // mostrar menú
-char Menu::mostrarMenu(fstream &archivoCreditoEntradaSalida) {
-  archivoCreditoEntradaSalida.clear(); // Restaura el estado del flujo a “bueno”
-  archivoCreditoEntradaSalida.seekg(0, ios::beg); // reposicionar puntero al principio del archivo
+char Menu::mostrarMenu(fstream &archivoAgendaES) {
+  archivoAgendaES.clear(); // Restaura el estado del flujo a “bueno”
+  archivoAgendaES.seekg(0, ios::beg); // reposicionar puntero al principio del archivo
 
   int op;
 
@@ -20,17 +20,39 @@ char Menu::mostrarMenu(fstream &archivoCreditoEntradaSalida) {
   return op;
 }
 
-// dar de alta cliente
-void Menu::darAltaContacto(fstream &archivoCreditoEntradaSalida) {
+// revisar si ya existe el usuario
+bool Menu::existeLlave(fstream archivoAgenaES, string valorPrimerNombre, string valorPrimerApellido) {
+  Contacto c;
+  archivoAgenaES.seekg(0);
+  
+  while(!archivoAgenaES.eof()) {
+    if (archivoAgenaES.eof())
+      break;
+    
+    archivoAgenaES.read(reinterpret_cast<char *>(&c), sizeof(Contacto));
+    if (llaveCorresponde(valorPrimerNombre, valorPrimerApellido, c))
+      return true;
+  }
+
+  return false;
+}
+
+// dar de alta contacto
+void Menu::darAltaContacto(fstream &archivoAgendaES) {
   string valorPrimerNombre, valorApellido, valorDireccion, valorCiudad, valorEstado, valorCodigoPostal;
   double valorSaldo;
-  Cliente c;
+  Contacto c;
 
   cout << "Primer nombre: ";
   cin >> valorPrimerNombre;
 
   cout << "Apellido: ";
   cin >> valorApellido;
+
+  if (existeLlave(fstream("contactos.txt", ios::in), valorPrimerNombre, valorApellido)) {
+    cout << "Esta llave ya existe\n";
+    return;
+  }
 
   cout << "Dirección: ";
   cin >> valorDireccion;
@@ -47,17 +69,71 @@ void Menu::darAltaContacto(fstream &archivoCreditoEntradaSalida) {
   cout << "Saldo: ";
   cin >> valorSaldo;
 
-  c = Cliente(valorPrimerNombre, valorApellido, valorDireccion, valorCiudad, valorEstado, valorCodigoPostal, valorSaldo);
+  c = Contacto(valorPrimerNombre, valorApellido, valorDireccion, valorCiudad, valorEstado, valorCodigoPostal, valorSaldo);
 
-  archivoCreditoEntradaSalida.write(reinterpret_cast<const char *>(&c), sizeof(Cliente)); // escribir cuenta
+
+  archivoAgendaES.write(reinterpret_cast<const char *>(&c), sizeof(Contacto)); // escribir cuenta
+}
+
+// transformar todas las letras a minúscula
+void Menu::estandarizar(string &llave) {
+  for (auto &letra : llave)
+    letra = tolower(letra);
+}
+
+// verificar que la llave corresponda al contacto
+bool Menu::llaveCorresponde(string valorPrimerNombre, string valorApellido, Contacto c) {
+  string primerNombre = c.obtenerPrimerNombre();
+  string apellido = c.obtenerApellido();
+
+  estandarizar(valorPrimerNombre);
+  estandarizar(valorApellido);
+  estandarizar(primerNombre);
+  estandarizar(apellido);
+
+  return valorPrimerNombre == primerNombre and valorApellido == apellido;
 }
 
 // consulta individual
-void Menu::consultaIndividual(fstream &archivoCreditoEntradaSalida) {
+void Menu::consultaIndividual(fstream &archivoAgendaES) {
+  string valorPrimerNombre, valorApellido;
+  Contacto c;
+  bool encontrado = false;
 
+  cout << "Primer nombre: ";
+  cin >> valorPrimerNombre;
+
+  cout << "Apellido: ";
+  cin >> valorApellido;
+
+  while (!archivoAgendaES.eof()) {
+    archivoAgendaES.read(reinterpret_cast<char *>(&c), sizeof(Contacto));
+
+    if (archivoAgendaES.eof())
+      break;
+
+    if (llaveCorresponde(valorPrimerNombre, valorApellido, c)) {
+      c.imprimirCabecera();
+      c.imprimirContacto();
+      encontrado = true;
+    }  
+  }  
+  if (!encontrado) 
+    cout << "No existe este contacto\n";
 }
 
 // consulta general
-void Menu::consultaGeneral(fstream &archivoCreditoEntradaSalida) {
+void Menu::consultaGeneral(fstream &archivoAgendaES) {
+  Contacto c;
 
+  c.imprimirCabecera();
+
+  while (!archivoAgendaES.eof()) {
+    archivoAgendaES.read(reinterpret_cast<char *>(&c), sizeof(Contacto));
+
+    if (archivoAgendaES.eof())
+      break;
+
+    c.imprimirContacto();
+  }
 }
