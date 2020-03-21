@@ -3,11 +3,11 @@ using namespace std;
 
 
 // mostrar menú
-char Menu::mostrarMenu(fstream &archivoAgendaES) {
+string Menu::mostrarMenu(fstream &archivoAgendaES) {
   archivoAgendaES.clear(); // Restaura el estado del flujo a “bueno”
   archivoAgendaES.seekg(0, ios::beg); // reposicionar puntero al principio del archivo
 
-  int op;
+  string op;
 
   cout << "Menú - Agenda de Contactos\n"
     << "1. Alta de contacto\n"
@@ -15,7 +15,7 @@ char Menu::mostrarMenu(fstream &archivoAgendaES) {
     << "3. Consultas generales\n"
     << "4. Salir\n"
     << "Elige tu opción: ";
-  cin >> op;
+  getline(cin, op);
   cout << '\n';
   return op;
 }
@@ -39,15 +39,14 @@ void Menu::mensaje(string texto) {
 
 // dar de alta contacto
 void Menu::darAltaContacto(fstream &archivoAgendaES) {
-  string valorPrimerNombre, valorApellido, valorDireccion, valorCiudad, valorEstado, valorCodigoPostal;
-  double valorSaldo;
+  string valorSaldo, valorPrimerNombre, valorApellido, valorDireccion, valorCiudad, valorEstado, valorCodigoPostal;
   Contacto c;
 
   cout << "Primer nombre: ";
-  cin >> valorPrimerNombre;
+  getline(cin, valorPrimerNombre);
 
   cout << "Apellido: ";
-  cin >> valorApellido;
+  getline(cin, valorApellido);
 
   if (existeLlave(fstream("contactos.txt", ios::in), valorPrimerNombre, valorApellido)) {
     mensaje("Esta llave ya existe");
@@ -55,21 +54,21 @@ void Menu::darAltaContacto(fstream &archivoAgendaES) {
   }
 
   cout << "Dirección: ";
-  cin >> valorDireccion;
+  getline(cin, valorDireccion);
 
   cout << "Ciudad: ";
-  cin >> valorCiudad;
+  getline(cin, valorCiudad);
 
   cout << "Estado: ";
-  cin >> valorEstado;
+  getline(cin, valorEstado);
 
   cout << "Código postal: ";
-  cin >> valorCodigoPostal;
+  getline(cin, valorCodigoPostal);
 
   cout << "Saldo: ";
-  cin >> valorSaldo;
+  getline(cin, valorSaldo);
 
-  c = Contacto(valorPrimerNombre, valorApellido, valorDireccion, valorCiudad, valorEstado, valorCodigoPostal, valorSaldo);
+  c = Contacto(valorPrimerNombre, valorApellido, valorDireccion, valorCiudad, valorEstado, valorCodigoPostal, stod(valorSaldo));
 
   guardarContacto(archivoAgendaES, c);
 }
@@ -100,8 +99,7 @@ bool Menu::leerContacto(fstream &archivoAgendaES, Contacto &c) {
   if (archivoAgendaES.peek() == -1) 
     return false;
 
-  string valorPrimerNombre, valorApellido, valorDireccion, valorCiudad, valorEstado, valorCodigoPostal;
-  double valorSaldo;
+  string valorSaldo, valorPrimerNombre, valorApellido, valorDireccion, valorCiudad, valorEstado, valorCodigoPostal;
   int len;
   string campo, temp;
   
@@ -121,11 +119,10 @@ bool Menu::leerContacto(fstream &archivoAgendaES, Contacto &c) {
   getline(ss, valorCiudad, '|'); 
   getline(ss, valorEstado, '|'); 
   getline(ss, valorCodigoPostal, '|'); 
-  getline(ss, temp, '|'); 
-  valorSaldo = stod(temp);
+  getline(ss, valorSaldo, '|'); 
 
   // asignar atributos a contacto
-  c = Contacto(valorPrimerNombre, valorApellido, valorDireccion, valorCiudad, valorEstado, valorCodigoPostal, valorSaldo);
+  c = Contacto(valorPrimerNombre, valorApellido, valorDireccion, valorCiudad, valorEstado, valorCodigoPostal, stod(valorSaldo));
 
   return !archivoAgendaES.eof();
 }
@@ -157,10 +154,10 @@ void Menu::consultaIndividual(fstream &archivoAgendaES) {
   bool encontrado = false;
 
   cout << "Primer nombre: ";
-  cin >> valorPrimerNombre;
+  getline(cin, valorPrimerNombre);
 
   cout << "Apellido: ";
-  cin >> valorApellido;
+  getline(cin, valorApellido);
 
   while (!archivoAgendaES.eof()) {
     leerContacto(archivoAgendaES, c);

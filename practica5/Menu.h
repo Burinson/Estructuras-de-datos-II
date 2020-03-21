@@ -6,14 +6,14 @@ using namespace std;
 
 class Menu {
   private:
-    int op;
+    string op;
     struct llaveCanonina {
       string primerNombre;
       string valorApellido;
     } llave;
   public:
     Menu() {};
-    char mostrarMenu(fstream&);
+    string mostrarMenu(fstream&);
     void darAltaContacto(fstream&);
     void consultaIndividual(fstream&);
     void consultaGeneral(fstream&);
