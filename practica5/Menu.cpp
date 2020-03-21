@@ -143,7 +143,6 @@ bool Menu::llaveCorresponde(string valorPrimerNombre, string valorApellido, Cont
   estandarizar(valorApellido);
   estandarizar(primerNombre);
   estandarizar(apellido);
-
   return valorPrimerNombre == primerNombre and valorApellido == apellido;
 }
 
@@ -159,12 +158,7 @@ void Menu::consultaIndividual(fstream &archivoAgendaES) {
   cout << "Apellido: ";
   getline(cin, valorApellido);
 
-  while (!archivoAgendaES.eof()) {
-    leerContacto(archivoAgendaES, c);
-
-    if (archivoAgendaES.eof())
-      break;
-
+  while (leerContacto(archivoAgendaES, c)) {
     if (llaveCorresponde(valorPrimerNombre, valorApellido, c)) {
       cout << '\n';
       c.imprimirCabecera();

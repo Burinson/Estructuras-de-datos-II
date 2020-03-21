@@ -1,49 +1,49 @@
 1
-Astra 
-Martinez 
-Bernardino #3638 
-Guadalajara 
-Jalisco 
-44860 
+Astra
+Martinez
+Bernardino #3638
+Guadalajara
+Jalisco
+44860
 0
 1
-Mario 
-Dueñas 
-Loma Dorada #302 
-Guadalajara 
-Jalisco 
-45418 
+Mario
+Dueñas
+Loma Dorada #302
+Guadalajara
+Jalisco
+45418
 45.6
 1
-Oscar 
-Torres 
-Paraiso #55 
-Zapopan 
-Jalisco 
-45234 
+Oscar
+Torres
+Paraiso #55
+Zapopan
+Jalisco
+45234
 -87.23
 1
-Uriel 
-Guzmán 
-Río Mascota #2310 
-Tlaquepaque 
-Jalisco 
-44890 
+Uriel
+Guzmán
+Río Mascota #2310
+Tlaquepaque
+Jalisco
+44890
 100
 1
-Ruben 
-Almazan 
-Rivera #34 
-Guadalajara 
-Jalisco 
-445342 
+Ruben
+Almazan
+Rivera #34
+Guadalajara
+Jalisco
+445342
 20.5
 1
-Edgar 
-Vázquez 
-Acapulco #976 
-Guadalajara 
-Jalisco 
-412342 
+Edgar
+Vázquez
+Acapulco #976
+Guadalajara
+Jalisco
+412342
 -99
 4
