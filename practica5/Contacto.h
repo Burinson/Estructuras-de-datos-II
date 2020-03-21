@@ -38,7 +38,6 @@ class Contacto {
 
   void establecerSaldo(double);
   double obtenerSaldo();
-
   void imprimirCabecera();
   void imprimirContacto();
 };  

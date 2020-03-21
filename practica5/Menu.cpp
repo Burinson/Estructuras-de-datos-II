@@ -25,14 +25,9 @@ bool Menu::existeLlave(fstream archivoAgenaES, string valorPrimerNombre, string 
   Contacto c;
   archivoAgenaES.seekg(0);
   
-  while(!archivoAgenaES.eof()) {
-    if (archivoAgenaES.eof())
-      break;
-    
-    archivoAgenaES.read(reinterpret_cast<char *>(&c), sizeof(Contacto));
+  while(leerContacto(archivoAgenaES, c))
     if (llaveCorresponde(valorPrimerNombre, valorPrimerApellido, c))
       return true;
-  }
 
   return false;
 }
@@ -71,8 +66,63 @@ void Menu::darAltaContacto(fstream &archivoAgendaES) {
 
   c = Contacto(valorPrimerNombre, valorApellido, valorDireccion, valorCiudad, valorEstado, valorCodigoPostal, valorSaldo);
 
+  guardarContacto(archivoAgendaES, c);
+}
 
-  archivoAgendaES.write(reinterpret_cast<const char *>(&c), sizeof(Contacto)); // escribir cuenta
+// guardar contacto
+void Menu::guardarContacto(fstream &archivoAgendaES, Contacto c) {
+  int len;
+  string campo;
+
+  // escribir cada atributo separado por un delimitador
+  campo += 
+  c.obtenerPrimerNombre() + '|' +
+  c.obtenerApellido() + '|' +
+  c.obtenerDireccion() + '|' +
+  c.obtenerCiudad() + '|' +
+  c.obtenerEstado() + '|' +
+  c.obtenerCodigoPostal() + '|' +
+  to_string(c.obtenerSaldo()) + '|';
+
+  len = campo.size();
+
+  archivoAgendaES.write(reinterpret_cast<char *>(&len), sizeof(int));
+  archivoAgendaES.write(campo.c_str(), len);
+}
+
+bool Menu::leerContacto(fstream &archivoAgendaES, Contacto &c) {
+  // revisa si se puede seguir leyendo
+  if (archivoAgendaES.peek() == -1) 
+    return false;
+
+  string valorPrimerNombre, valorApellido, valorDireccion, valorCiudad, valorEstado, valorCodigoPostal;
+  double valorSaldo;
+  int len;
+  string campo, temp;
+  
+  // leer registro
+  archivoAgendaES.read(reinterpret_cast<char *>(&len), sizeof(int));
+  char *buffer = new char[len];
+  archivoAgendaES.read(buffer, len);
+  campo = buffer;
+  delete [] buffer;
+
+  stringstream ss(campo);
+
+  // leer atributos
+  getline(ss, valorPrimerNombre, '|'); 
+  getline(ss, valorApellido, '|'); 
+  getline(ss, valorDireccion, '|'); 
+  getline(ss, valorCiudad, '|'); 
+  getline(ss, valorEstado, '|'); 
+  getline(ss, valorCodigoPostal, '|'); 
+  getline(ss, temp, '|'); 
+  valorSaldo = stod(temp);
+
+  // asignar atributos a contacto
+  c = Contacto(valorPrimerNombre, valorApellido, valorDireccion, valorCiudad, valorEstado, valorCodigoPostal, valorSaldo);
+
+  return !archivoAgendaES.eof();
 }
 
 // transformar todas las letras a minúscula
@@ -80,6 +130,7 @@ void Menu::estandarizar(string &llave) {
   for (auto &letra : llave)
     letra = tolower(letra);
 }
+
 
 // verificar que la llave corresponda al contacto
 bool Menu::llaveCorresponde(string valorPrimerNombre, string valorApellido, Contacto c) {
@@ -107,14 +158,16 @@ void Menu::consultaIndividual(fstream &archivoAgendaES) {
   cin >> valorApellido;
 
   while (!archivoAgendaES.eof()) {
-    archivoAgendaES.read(reinterpret_cast<char *>(&c), sizeof(Contacto));
+    leerContacto(archivoAgendaES, c);
 
     if (archivoAgendaES.eof())
       break;
 
     if (llaveCorresponde(valorPrimerNombre, valorApellido, c)) {
+      cout << '\n';
       c.imprimirCabecera();
       c.imprimirContacto();
+      cout << '\n';
       encontrado = true;
     }  
   }  
@@ -128,12 +181,8 @@ void Menu::consultaGeneral(fstream &archivoAgendaES) {
 
   c.imprimirCabecera();
 
-  while (!archivoAgendaES.eof()) {
-    archivoAgendaES.read(reinterpret_cast<char *>(&c), sizeof(Contacto));
-
-    if (archivoAgendaES.eof())
-      break;
-
+  while (leerContacto(archivoAgendaES, c)) 
     c.imprimirContacto();
-  }
+
+  cout << '\n';
 }
