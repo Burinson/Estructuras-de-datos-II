@@ -85,25 +85,25 @@ double Contacto::obtenerSaldo() {
 // imprimir contacto
 void Contacto::imprimirContacto() {
   cout << left
-  << setw(16) << obtenerPrimerNombre()
-  << setw(16) << obtenerApellido()
-  << setw(16) << obtenerDireccion()
-  << setw(16) << obtenerDireccion()
-  << setw(16) << obtenerCiudad()
-  << setw(16) << obtenerCodigoPostal()
-  << setw(16) << setprecision(2) << fixed << obtenerSaldo() 
+  << setw(30) << obtenerPrimerNombre() << '\t'
+  << setw(30) << obtenerApellido() << '\t'
+  << setw(30) << obtenerDireccion() << '\t'
+  << setw(30) << obtenerCiudad() << '\t'
+  << setw(30) << obtenerEstado() << '\t'
+  << setw(30) << obtenerCodigoPostal() << '\t'
+  << setw(30) << setprecision(2) << fixed << obtenerSaldo() 
   << endl;
 }
 
 // imprimir cabecera
 void Contacto::imprimirCabecera() {
   cout << left
-  << setw(16) << "NOMBRE" 
-  << setw(16) << "APELLIDO" 
-  << setw(16) << "DIRECCIÓN"
-  << setw(16) << "CIUDAD"
-  << setw(17) << "ESTADO"
-  << setw(17) << "CÓDIGO POSTAL"
-  << setw(16) << "SALDO" 
+  << setw(31) << "NOMBRE\t" 
+  << setw(25) << "APELLIDO\t" 
+  << setw(27) << "DIRECCIÓN\t"
+  << setw(31) << "CIUDAD\t"
+  << setw(31) << "ESTADO\t"
+  << setw(31) << "CÓDIGO POSTAL\t"
+  << setw(30) << "SALDO\t" 
   << endl;
 }

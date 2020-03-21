@@ -21,5 +21,6 @@ class Menu {
     bool leerContacto(fstream&, Contacto&);
     bool existeLlave(fstream, string, string);
     void estandarizar(string&);
+    void mensaje(string);
     bool llaveCorresponde(string, string, Contacto);
 };

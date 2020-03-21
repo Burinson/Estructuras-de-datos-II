@@ -7,12 +7,12 @@ using namespace std;
 
 class Contacto {
  private:
-  char primerNombre[15];
-  char apellido[15];
-  char direccion[15];
-  char ciudad[15];
-  char estado[15];
-  char codigoPostal[15];
+  char primerNombre[50];
+  char apellido[50];
+  char direccion[50];
+  char ciudad[50];
+  char estado[50];
+  char codigoPostal[50];
   double saldo;
 
  public:

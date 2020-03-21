@@ -32,6 +32,11 @@ bool Menu::existeLlave(fstream archivoAgenaES, string valorPrimerNombre, string 
   return false;
 }
 
+// mensajes de información
+void Menu::mensaje(string texto) {
+  cout << "\n(!) " << texto << "\n\n";
+}
+
 // dar de alta contacto
 void Menu::darAltaContacto(fstream &archivoAgendaES) {
   string valorPrimerNombre, valorApellido, valorDireccion, valorCiudad, valorEstado, valorCodigoPostal;
@@ -45,7 +50,7 @@ void Menu::darAltaContacto(fstream &archivoAgendaES) {
   cin >> valorApellido;
 
   if (existeLlave(fstream("contactos.txt", ios::in), valorPrimerNombre, valorApellido)) {
-    cout << "Esta llave ya existe\n";
+    mensaje("Esta llave ya existe");
     return;
   }
 
@@ -172,7 +177,7 @@ void Menu::consultaIndividual(fstream &archivoAgendaES) {
     }  
   }  
   if (!encontrado) 
-    cout << "No existe este contacto\n";
+    mensaje("No existe este contacto");
 }
 
 // consulta general
