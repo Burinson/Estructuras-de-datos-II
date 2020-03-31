@@ -1,7 +1,7 @@
 #include "Cheque.h"
 class ChequeRechazado : public Cheque { // hereda atributos de la superclase cheque
   private:
-    double cargo;
+    double cargo; // único atributo que difiere de la superclase
   public:
     double obtenerCargo() {
       return this->cargo;
@@ -18,6 +18,7 @@ class ChequeRechazado : public Cheque { // hereda atributos de la superclase che
       this->cargo = cargo;
     }
 
+    // clase virtual para sobreescribir la función del mismo nombre de la superclase
     virtual void imprimir() {
       cout << left 
       << "Número de cheque\t" 
