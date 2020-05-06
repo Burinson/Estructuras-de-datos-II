@@ -1,7 +1,6 @@
 #include <iostream>
 #include <array>
 using namespace std;
-#define what(x) cout << #x << ": " << x << '\n';
 
 const int MAX = 5;
 const int N = 1e5;
@@ -27,8 +26,6 @@ class Cola {
       void insertar(T v) {
         if (!lleno())
           a[++der] = v; // incrementa puntero de la derecha y se asigna elemento
-        what(der);
-        what(izq);
       }
 
       void eliminar() {

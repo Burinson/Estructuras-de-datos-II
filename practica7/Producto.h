@@ -8,9 +8,9 @@ class Producto {
   char nombre[20];
   double precio;
 public:
-  Producto(){};
+  Producto(){}; // constructor por defecto
   
-  Producto(string clave, string nombre, string precio) {
+  Producto(string clave, string nombre, string precio) { // constructor
     establecerClave(clave);
     establecerNombre(nombre);
     establecerPrecio(precio);
@@ -42,7 +42,7 @@ public:
     this->precio = stod(precio);
   }
 
-  void leer() {
+  void leer() { // lectura de un producto estándar
     string clave, nombre, precio;
 
     cout << "Clave: ";
@@ -56,6 +56,6 @@ public:
 
     establecerClave(clave);
     establecerNombre(nombre);
-    establecerPrecio(precio); 
+    establecerPrecio(precio);  // se usan los métodos que ya existen
   }
 };
