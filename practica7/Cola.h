@@ -3,7 +3,7 @@
 using namespace std;
 
 const int MAX = 5;
-const int N = 1e5;
+const int N = 1000;
 
 template<class T>
 class Cola {
