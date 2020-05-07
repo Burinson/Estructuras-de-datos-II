@@ -28,8 +28,6 @@ class Menu {
       carrito.insertar(p);
 
       cout << "\nEl producto fue comprado exitosamente\n";
-
-      total += p.obtenerPrecio(); // acumular ventas
     }
 
     void vender(Cola<Producto> &carrito, double &total) {
@@ -40,7 +38,7 @@ class Menu {
 
       cout << "\nEl producto fue vendido exitosamente\n";
 
-      total -= carrito.frente().obtenerPrecio(); // restar precio de productos del total de ventas
+      total += carrito.frente().obtenerPrecio(); // acumular ventas
       carrito.eliminar(); // eliminar el producto más proóximo en la cola
     }
 
@@ -60,8 +58,8 @@ class Menu {
       archivo.write(attr.c_str(), len);
     }
 
-    void cargar(Cola<Producto> &carrito, fstream &archivo, double &total) { // cargar información a la cola y total de ventas
-      string clave, nombre, precio;
+    void cargar(Cola<Producto> &carrito, fstream &archivo, fstream &totalArchivo, double &total) { // cargar información a la cola y total de ventas
+      string clave, nombre, precio, valorTotal;
 
       while (!archivo.eof()) { // mientras el archivo no haya finalizado 
         if (archivo.peek() == -1)
@@ -71,18 +69,27 @@ class Menu {
         leer(archivo, nombre);
         leer(archivo, precio); // leer atributos
 
-        total += stod(precio); // recuperar total
-
         carrito.insertar(Producto(clave, nombre, precio)); // llenar la cola con la información
       }
-
       archivo.close(); // cerrar el archivo
+
+      cout << totalArchivo.peek() << '\n';
+      if (totalArchivo.peek() != -1) {
+        leer(totalArchivo, valorTotal);
+        total = stod(valorTotal); // recuperar total
+      }
+
+      totalArchivo.close(); // cerrrar el archivo
     }
 
-    void guardar(Cola<Producto> &carrito, fstream &archivo) { // guardar la información de la cola al archivo físico
+    void guardar(Cola<Producto> &carrito, fstream &archivo, fstream &totalArchivo, double total) { // guardar la información de la cola al archivo físico
       archivo.open("productos.dat", ios::out | ios::trunc); // para no tener que vaciar el archivo manualmente
       archivo.clear(); // restablecer flujo a "bueno"
       archivo.seekg(0, ios::beg); // reposiciona el puntero al principio del archivo
+
+      totalArchivo.open("total.dat", ios::out | ios::trunc);
+      totalArchivo.clear();
+      totalArchivo.seekg(0, ios::beg);
 
       while (!carrito.vacio()) { // mientras no esté vacío el carrito
         Producto p = carrito.frente(); // el producto más próximo es el que sigue en la cola
@@ -93,5 +100,8 @@ class Menu {
         escribir(archivo, to_string(p.obtenerPrecio())); // se escriben todos los atributos al archivo físico
       }
       archivo.close(); // cerrar el archivo
+
+      escribir(totalArchivo, to_string(total));
+      totalArchivo.close(); // cerrar el archivo
     }
 };

@@ -19,8 +19,9 @@ int main() {
 
   Cola<Producto> carrito;
   fstream archivo("productos.dat", ios::in | ios::out | ios::app); // archivo lógico
-  menu.cargar(carrito, archivo, total); // cargar información a la cola y total de ventas
+  fstream totalArchivo("total.dat", ios::in | ios::out | ios::app); // archivo lógico
 
+  menu.cargar(carrito, archivo, totalArchivo, total); // cargar información a la cola y total de venta
   do {
     menu.mostrar(op);
     if (op == "1")
@@ -30,7 +31,7 @@ int main() {
     else if (op == "3")
       cout << "Total: $" << setprecision(2) << fixed << total << '\n'; // total de ventas
     else if (op == "4")
-      menu.guardar(carrito, archivo); // guardar información en archivo lógico
+      menu.guardar(carrito, archivo, totalArchivo, total); // guardar información en archivo lógico
     else 
       cout << "(!) Opción no válida\n";
   } while(op != "4");
